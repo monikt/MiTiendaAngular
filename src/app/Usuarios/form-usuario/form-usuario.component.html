@@ -1,0 +1,82 @@
+<div *ngIf="formulario">
+  <h1>{{ usuario ? 'Editar' : 'Nuevo' }} Usuario</h1>
+
+  <div class="mt-5 alert alert-danger" *ngIf="errors">
+      {{ errors | json }}
+  </div>
+
+  <form class="mt-5" [formGroup]="formulario" autocomplete="off" (ngSubmit)="guardar()">
+
+      <div class="mb-2">
+          <label for="nombres">Nombres</label>
+          <input id="nombres" type="text" placeholder="nombres" class="form-control" formControlName="nombres">
+          <div class="invalid-feedback">
+              <ng-container *ngIf="controlTieneError('nombres', 'required')">
+                  Este campo es obligatorio
+              </ng-container>
+              <ng-container *ngIf="controlTieneError('nombres', 'minlength')">
+                  Debe tener al menos 3 caracteres
+              </ng-container>
+              <ng-container *ngIf="controlTieneError('nombres', 'maxlength')">
+                  Debe tener 30 caracteres como máximo
+              </ng-container>
+          </div>
+      </div>
+
+      <div class="mb-2">
+          <label for="apellidos">Apellidos</label>
+          <input id="apellidos" type="text" placeholder="apellidos" class="form-control" formControlName="apellidos">
+          <div class="invalid-feedback">
+              <ng-container *ngIf="controlTieneError('apellidos', 'required')">
+                  Este campo es obligatorio
+              </ng-container>
+              <ng-container *ngIf="controlTieneError('apellidos', 'minlength')">
+                Debe tener al menos 3 caracteres
+            </ng-container>
+            <ng-container *ngIf="controlTieneError('apellidos', 'maxlength')">
+                Debe tener 30 caracteres como máximo
+            </ng-container>
+          </div>
+      </div>
+
+      <div class="mb-2">
+          <label for="email">Correo</label>
+          <input id="email" type="email" placeholder="email" class="form-control" formControlName="email">
+          <div class="invalid-feedback">
+              <ng-container *ngIf="controlTieneError('email', 'required')">
+                  Este campo es obligatorio
+              </ng-container>
+              <ng-container *ngIf="controlTieneError('email', 'pattern')">
+                El valor es inválido
+            </ng-container>
+          </div>
+      </div>
+
+      <div class="mb-2">
+        <label for="password">Contraseña</label>
+        <input id="password" type="password" placeholder="password" class="form-control" formControlName="password">
+        <div class="invalid-feedback">
+            <ng-container *ngIf="controlTieneError('password', 'required')">
+                Este campo es obligatorio
+            </ng-container>
+            <ng-container *ngIf="controlTieneError('password', 'minlength')">
+              Debe tener al menos 4 caracteres
+          </ng-container>
+          <ng-container *ngIf="controlTieneError('password', 'maxlength')">
+              Debe tener 10 caracteres como máximo
+          </ng-container>
+        </div>
+    </div>
+
+
+      <div class="text-end mt-5">
+          <button class="btn btn-light" type="button" routerLink="/usuarios">
+              Cancelar
+          </button>
+          <button class="btn btn-primary ms-2">
+              {{ usuario ? 'Actualizar' : 'Crear' }} Usuario
+          </button>
+      </div>
+  </form>
+</div>
+

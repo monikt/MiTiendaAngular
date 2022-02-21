@@ -1,0 +1,45 @@
+<h1>Lista de Usuarios</h1>
+
+<<div class="text-end">
+  <button class="btn btn-primary" routerLink="/usuarios/nuevo">
+    Nuevo libro
+  </button>
+</div>
+
+<table class="table table-hover mt-5">
+  <thead>
+    <tr>
+      <th>Nombres</th>
+      <th>Correo</th>
+      <th>F. CREACION</th>
+      <th>F. ACTUALIZACION</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let usuario of usuarios">
+      <td>
+        <div class="fw-bold">
+          {{ usuario.nombres }}
+        </div>
+        <p>
+          {{ usuario.apellidos }}
+        </p>
+      </td>
+      <td>
+        {{ usuario.email}}
+      </td>
+      <td>
+        {{ usuario.fechaCreacion | date: "dd/MM/yyyy hh:mm a" }}
+      </td>
+      <td>
+        {{ usuario.fechaActualizacion | date: "dd/MM/yyyy hh:mm a" }}
+      </td>
+      <td>
+        <button  class="btn btn-outline-primary" [routerLink]="['/usuarios', usuario.id, 'editar']">Editar</button>
+        <button class="ms-2 btn btn-outline-danger" (click)="eliminar(usuario)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
