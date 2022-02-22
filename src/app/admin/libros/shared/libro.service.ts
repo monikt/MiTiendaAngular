@@ -40,4 +40,7 @@ export class LibroService {
     return this.http.delete<Libro>(`${environment.apiBase}/admin/libros/${id}`);
   }
 
+  subirArchivo(formData: FormData) {
+    return this.http.post(`${environment.apiBase}/assets/upload`, formData);
+  }
 }

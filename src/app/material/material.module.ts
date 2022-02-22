@@ -13,13 +13,24 @@ import { MatCardModule } from '@angular/material/card';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
-
-
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
+  exports: [
+    MatSidenavModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatTooltipModule,
+    MatCardModule,
+    MatBadgeModule,
+    MatSnackBarModule,
+    MatMenuModule,
+    MatSelectModule
   ]
 })
 export class MaterialModule { }

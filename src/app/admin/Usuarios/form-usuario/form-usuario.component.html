@@ -1,0 +1,89 @@
+<div *ngIf="formulario">
+  <h1>{{ usuario ? 'Editar' : 'Nuevo' }} Usuario</h1>
+
+  <div class="mt-5 alert alert-danger" *ngIf="errors">
+      {{ errors | json }}
+  </div>
+
+  <form class="mt-5" [formGroup]="formulario" autocomplete="off" (ngSubmit)="guardar()">
+      <mat-form-field appearance="outline" class="mb-2 w-100">
+        <mat-label>Nombres</mat-label>
+        <input matInput type="text" placeholder="Monica" formControlName="nombres"/>
+        <mat-error>
+          <ng-container *ngIf="controlTieneError('nombres', 'required')">
+            Este campo es obligatorio
+          </ng-container>
+          <ng-container *ngIf="controlTieneError('nombres', 'minlength')">
+            Debe tener al menos 3 caracteres
+          </ng-container>
+          <ng-container *ngIf="controlTieneError('nombres', 'maxlength')">
+            Debe tener 30 caracteres como máximo
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline" class="mb-2 w-100">
+        <mat-label>Apellidos</mat-label>
+        <input matInput type="text" placeholder="Castellanos" formControlName="apellidos"/>
+        <mat-error>
+          <ng-container *ngIf="controlTieneError('apellidos', 'required')">
+            Este campo es obligatorio
+          </ng-container>
+          <ng-container *ngIf="controlTieneError('apellidos', 'minlength')">
+            Debe tener al menos 3 caracteres
+          </ng-container>
+          <ng-container *ngIf="controlTieneError('apellidos', 'maxlength')">
+            Debe tener 30 caracteres como máximo
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="mb-2 w-100">
+        <mat-label>Roles</mat-label>
+        <select matNativeControl required formControlName="rol">
+          <option value="ADMIN">ADMIN</option>
+          <option value="LECTOR">LECTOR</option>
+        </select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="mb-2 w-100">
+        <mat-label>Correo</mat-label>
+        <input matInput type="email" placeholder="prueba@hotmail.com" formControlName="email"/>
+        <mat-error>
+          <ng-container *ngIf="controlTieneError('email', 'required')">
+            Este campo es obligatorio
+          </ng-container>
+          <ng-container *ngIf="controlTieneError('email', 'pattern')">
+           Valor Invalido
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline" class="mb-2 w-100">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" placeholder="" formControlName="password"/>
+        <mat-error>
+          <ng-container *ngIf="controlTieneError('password', 'required')">
+            Este campo es obligatorio
+          </ng-container>
+          <ng-container *ngIf="controlTieneError('password', 'minlength')">
+            Debe tener al menos 4 caracteres
+          </ng-container>
+          <ng-container *ngIf="controlTieneError('password', 'maxlength')">
+            Debe tener 10 caracteres como máximo
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+
+      <div class="text-end mt-5">
+          <button mat-button type="button" routerLink="/admin/usuarios">
+              Cancelar
+          </button>
+          <button class="ms-2" mat-raised-button color="primary">
+              {{ usuario ? 'Actualizar' : 'Crear' }} Usuario
+          </button>
+      </div>
+  </form>
+</div>
+

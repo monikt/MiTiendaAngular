@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Usuario } from '../shared/usuario.model';
+import { Rol, Usuario } from '../shared/usuario.model';
 import { UsuarioService } from '../shared/usuario.service';
 
 @Component({
@@ -10,10 +10,16 @@ import { UsuarioService } from '../shared/usuario.service';
   styles: [
   ]
 })
+
 export class FormUsuarioComponent implements OnInit {
   formulario?: FormGroup;
   errors: any;
   usuario?: Usuario;
+
+  roles: Rol[] = [
+    {value: 'ADMIN', viewValue: 'ADMIN'},
+    {value: 'LECTOR', viewValue: 'LECTOR'}
+  ];
 
 
   constructor(
@@ -37,7 +43,8 @@ export class FormUsuarioComponent implements OnInit {
             nombres: [usuario.nombres, [Validators.required, Validators.minLength(3), Validators.maxLength(30)], []],
             apellidos: [usuario.apellidos, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
             email: [usuario.email, [Validators.required, Validators.pattern("^.+@.+\..+$")]],
-            password: [usuario.password, [Validators.required, Validators.minLength(4), Validators.maxLength(10)]]
+            password: [usuario.password, [Validators.required, Validators.minLength(4), Validators.maxLength(10)]],
+            rol: [usuario.rol, [Validators.required]],
           });
         })
     } else {
@@ -45,7 +52,8 @@ export class FormUsuarioComponent implements OnInit {
         nombres: [, [Validators.required, Validators.minLength(3), Validators.maxLength(30)], []],
         apellidos: [, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
         email: [, [Validators.required, Validators.pattern("^.+@.+\..+$")]],
-        password: [, [Validators.required, Validators.minLength(4), Validators.maxLength(10)]]
+        password: [, [Validators.required, Validators.minLength(4), Validators.maxLength(10)]],
+        rol: [, [Validators.required]]
       });
     }
   }
@@ -62,7 +70,7 @@ export class FormUsuarioComponent implements OnInit {
 
     const usuario = this.formulario?.value;
 
-    usuario.rol = "ADMIN"
+
 
     let request;
 
@@ -75,7 +83,7 @@ export class FormUsuarioComponent implements OnInit {
     request
       .subscribe({
         next: usuario => {
-          this.router.navigate(['/usuarios']);
+          this.router.navigate(['/admin/usuarios']);
         },
         error: error => {
           this.errors = error.error.errors;

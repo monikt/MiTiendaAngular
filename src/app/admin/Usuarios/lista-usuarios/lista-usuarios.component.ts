@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Usuario } from '../shared/usuario.model';
+import { PageEvent } from '@angular/material/paginator';
+import { Usuario, UsuarioPage } from '../shared/usuario.model';
 import { UsuarioService } from '../shared/usuario.service';
 
 @Component({
@@ -11,6 +12,8 @@ import { UsuarioService } from '../shared/usuario.service';
 export class ListaUsuariosComponent implements OnInit {
 
   usuarios?: Usuario[];
+  usuariosPage?: UsuarioPage;
+  displayedColumns: string[] = ['nombres', 'email', 'rol', 'fechaCreacion', 'fechaActualizacion','acciones'];
   constructor(
     private usuarioservice: UsuarioService
   ) { }
@@ -20,11 +23,10 @@ export class ListaUsuariosComponent implements OnInit {
   }
 
   getAll() {
-    this.usuarioservice.listar()
-      .subscribe(usuarios => {
-        console.log('Usuarios recibidos', usuarios);
-        this.usuarios = usuarios;
-      })
+    this.usuarioservice.paginar()
+    .subscribe(usuarioPage => {
+      this.usuariosPage = usuarioPage;
+    })
   }
 
   eliminar(usuario: Usuario) {
@@ -37,6 +39,14 @@ export class ListaUsuariosComponent implements OnInit {
         })
       window.alert("Se ha eliminado de manera correcta el libro")
     }
+  }
+  paginarUsuarios(event: PageEvent) {
+    const page = event.pageIndex;
+    const size = event.pageSize;
 
+    this.usuarioservice.paginar(size, page)
+      .subscribe(usuarioPage => {
+        this.usuariosPage = usuarioPage;
+      })
   }
 }

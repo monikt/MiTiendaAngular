@@ -38,3 +38,7 @@ export interface Sort {
   unsorted: boolean;
   sorted:   boolean;
 }
+ export interface Rol {
+  value: string;
+  viewValue: string;
+}

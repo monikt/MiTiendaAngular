@@ -1,6 +1,8 @@
+
 import { Component, OnInit } from '@angular/core';
 import { LibroService } from '../shared/libro.service';
-import { Libro } from '../shared/ibro.model';
+import { Libro, LibroPage } from '../shared/ibro.model';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-lista-libros',
@@ -11,6 +13,9 @@ import { Libro } from '../shared/ibro.model';
 export class ListaLibrosComponent implements OnInit {
 
   libros?: Libro[];
+  libroPage?: LibroPage;
+  displayedColumns: string[] = ['titulo', 'precio', 'fechaCreacion', 'acciones'];
+
   constructor(
     private libroservice: LibroService
   ) { }
@@ -20,10 +25,10 @@ export class ListaLibrosComponent implements OnInit {
   }
 
   getAll() {
-    this.libroservice.listar()
-      .subscribe(libros => {
-        console.log('libros recibidos', libros);
-        this.libros = libros;
+    this.libroservice.paginar()
+      .subscribe(libroPage => {
+        console.log('libros recibidos', libroPage);
+        this.libroPage = libroPage;
       })
   }
 
@@ -39,6 +44,15 @@ export class ListaLibrosComponent implements OnInit {
 
     }
 
+  }
+  paginarLibros(event: PageEvent) {
+    const page = event.pageIndex;
+    const size = event.pageSize;
+
+    this.libroservice.paginar(size, page)
+      .subscribe(libroPage => {
+        this.libroPage = libroPage;
+      })
   }
 
 }

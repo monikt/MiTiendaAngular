@@ -1,0 +1,26 @@
+<mat-toolbar color="primary">
+  <span>Panel Administrativo</span>
+
+  <button mat-button routerLink="/admin" class="ms-3">
+      Inicio
+  </button>
+
+  <button mat-button routerLink="/admin/libros" class="ms-3">
+      Libros
+  </button>
+
+  <button mat-button routerLink="/admin/usuarios" class="ms-3">
+    Usuarios
+</button>
+
+  <span class="spacer"></span>
+
+  <button mat-button>
+      Monica Castellanos
+  </button>
+
+</mat-toolbar>
+
+<div class="container py-5">
+  <router-outlet></router-outlet>
+</div>

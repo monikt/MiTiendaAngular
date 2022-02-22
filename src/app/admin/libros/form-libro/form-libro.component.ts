@@ -33,12 +33,13 @@ export class FormLibroComponent implements OnInit {
       this.libroService.obtener(parseInt(idLibro))
         .subscribe(libro => {
           this.libro = libro;
-
-          this.formulario = this.fb.group({
+            this.formulario = this.fb.group({
             titulo: [libro.titulo, [Validators.required, Validators.minLength(3), Validators.maxLength(100)], []],
             slug: [libro.slug, [Validators.required, Validators.pattern('[a-z0-9-]+')]],
             descripcion: [libro.descripcion, [Validators.required]],
-            precio: [libro.precio, [Validators.required, Validators.min(0)]]
+            precio: [libro.precio, [Validators.required, Validators.min(0)]],
+            rutaPortada: [libro.rutaPortada, [Validators.required]],
+            rutaArchivo: [libro.rutaArchivo, [Validators.required]]
           });
         })
     } else {
@@ -46,7 +47,9 @@ export class FormLibroComponent implements OnInit {
         titulo: [, [Validators.required, Validators.minLength(3), Validators.maxLength(100)], []],
         slug: [, [Validators.required, Validators.pattern('[a-z0-9-]+')]],
         descripcion: [, [Validators.required]],
-        precio: [, [Validators.required, Validators.min(0)]]
+        precio: [, [Validators.required, Validators.min(0)]],
+        rutaPortada: [, [Validators.required]],
+        rutaArchivo: [, [Validators.required]]
       });
     }
   }
@@ -58,14 +61,10 @@ export class FormLibroComponent implements OnInit {
   guardar() {
     console.log("aqui llega");
     if (this.formulario?.invalid) {
+      this.formulario.markAllAsTouched();
       return;
     }
-
     const libro = this.formulario?.value;
-
-    libro.rutaArchivo = 'abc.pdf';
-    libro.rutaPortada = 'abc.jpg';
-
     let request;
 
     if (this.libro) {
@@ -78,12 +77,37 @@ export class FormLibroComponent implements OnInit {
     request
       .subscribe({
         next: libro => {
-          this.router.navigate(['/libros']);
+          this.router.navigate(['/admin/libros']);
         },
         error: error => {
           this.errors = error.error.errors;
         }
       })
+  }
+  crearSlug() {
+    const slug = this.formulario?.controls['titulo'].value
+      .toLowerCase()
+      .replace(/\s+/g, '-') // Replace spaces with -
+      .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+      .replace(/\-\-+/g, '-') // Replace multiple - with single -
+      .replace(/^-+/, '') // Trim - from start of text
+      .replace(/-+$/, ''); // Trim - from end of text
+
+    this.formulario?.controls['slug'].setValue(slug);
+  }
+
+  subirArchivo(event: any, control: string) {
+    const file = event.target.files[0];
+
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      this.libroService.subirArchivo(formData)
+        .subscribe((response: any) => {
+          this.formulario?.controls[control].setValue(response.filename);
+        })
+    }
   }
 
 }
