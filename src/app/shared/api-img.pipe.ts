@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Pipe({
   name: 'apiImg'
@@ -6,7 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ApiImgPipe implements PipeTransform {
 
   transform(value: unknown, ...args: unknown[]): unknown {
-    return null;
+    return environment.apiBase + '/assets/' + value;
   }
 
 }
